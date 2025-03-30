@@ -21,6 +21,23 @@ const scrollToSection = (href) => {
 		})
 	}
 }
+
+const isDarkMode = ref(localStorage.getItem('theme') === 'dark')
+
+const toggleDarkMode = () => {
+	const html = document.documentElement
+
+	if (isDarkMode.value) {
+		html.classList.remove('dark')
+		localStorage.setItem('theme', 'light')
+	} else {
+		html.classList.add('dark')
+		localStorage.setItem('theme', 'dark')
+	}
+
+	// Update the local storage theme state
+	isDarkMode.value = !isDarkMode.value
+}
 </script>
 
 <template>
@@ -69,6 +86,23 @@ const scrollToSection = (href) => {
 						</a>
 					</li>
 				</ul>
+
+				<button
+					class="text-white ml-20 z-10 hidden md:block"
+					@click="toggleDarkMode"
+				>
+					<!-- Show moon icon if dark mode is off, otherwise show sun icon -->
+					<Icon
+						v-if="!isDarkMode"
+						icon="line-md:moon-filled"
+						class="text-5xl text-primary"
+					></Icon>
+					<Icon
+						v-else
+						icon="line-md:sunny-outline"
+						class="text-5xl text-secondary"
+					></Icon>
+				</button>
 			</nav>
 		</div>
 	</header>
